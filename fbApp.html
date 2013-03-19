@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<script src="http://code.jquery.com/jquery-1.9.1.js"
+				type="text/javascript">
+		</script>
+	</head>
+	<body>
+		<h1>User Profile</h1>
+		<div id="content">
+		</div>
+		<button id="button">Get User Profile</button>
+	</body>
+	<script>
+	$(document).ready(function() {
+		$("#button").click(function() {
+			var access_token = "AAACEdEose0cBACWxZBfVnUMZCwvNoSyGT9pGKrhVPc4irZAmeNnr4HpRq4ZBrCWtIQRCANveJw0dr8o7gV1styfPxLtN02ZCKwNHuoRXPqQZDZD";
+			var service_name = "https://graph.facebook.com/658992466?access_token" + access_token + "&fields=id,name,age_range,birthday,email,languages,interests,religion,gender,location,photos,cover,events,friends,likes,relationship_status";
+			$.getJSON(service_name, function(data) {
+				//Basic Information
+				var name = "<h2>" + data["name"] + "</h2>";
+				var gender = "<b>Gender: </b>" + data["gender"] + "<br>";
+				var age = "<b>Age: </b>" + data["age_range"]["max"] + "<br>";
+				var location = "<b>Address/Location: </b>" + data["location"]["name"] + "<br>";
+				var number = "<b>Phone Number: </b>" + data["phone_number"] + "<br>";
+				var email = "<b>Email Address: </b>" + data["email"] + "<br>";
+				var languages = "<b>Languages Spoken: </b><br><ul>";
+				for (var i = 0; i < data["languages"].length; i++) {
+					languages += "<li>" + data["languages"][i]["name"] + "</li>";
+				}
+				languages += "</ul>";
+				var birthday = "<b>Birthday: </b>" + data["birthday"] + "<br>";
+				var interests = "<b>Interests: </b><br><ul>";
+				for (var i = 0; i < data["interests"]["data"].length; i++) {
+					interests += "<li>" + data["interests"]["data"][i]["name"] + "</li>";
+				}
+				interests += "</ul>";
+				var religion = "<b>Religion: </b>" + data["religion"] + "<br>";
+				//Pictures
+				var pictures = "<h3>Pictures</h3>";
+				for (var i = 0; i < 5; i++) {
+					pictures += "<img src=" + data["photos"]["data"][i]["source"] + "><br><i>Posted by: </i>" + data["photos"]["data"][i]["from"]["name"] + "<br>";
+				}
+				var cover_photo = "<b>Cover Photo</b><br><img src=" + data["cover"]["source"] + "><br>";
+				//Social Aspect
+				var event = "<b>Latest Event Attended: </b>" + data["events"]["data"][0]["name"] + "<br>";
+				var likes = "<h3>Likes</h3><ul>";
+				for (var i = 0; i < data["likes"]["data"].length; i++) {
+					likes += "<li>" + data["likes"]["data"][i]["name"] + "</li>";
+				}
+				likes += "</ul>";
+				var friends = "<h3>Friends</h3><ul>";
+				for (var i = 0; i < data["friends"]["data"].length; i++) {
+					friends += "<li>" + data["friends"]["data"][i]["name"] + "</li>";
+				}
+				friends += "</ul>";
+				var relationship_status = "<b>Relationship Status: </b>" + data["relationship_status"] + "<br>";
+
+				$("#content").append(name);
+				$("#content").append(gender);
+				$("#content").append(age);
+				$("#content").append(location);
+				$("#content").append(number);
+				$("#content").append(email);
+				$("#content").append(languages);
+				$("#content").append(birthday);
+				$("#content").append(interests);
+				$("#content").append(religion);
+				$("#content").append(pictures);
+				$("#content").append(cover_photo);
+				$("#content").append(event);
+				$("#content").append(likes);
+				$("#content").append(friends);
+				$("#content").append(relationship_status);
+			});
+		});
+	});
+	</script>
+</html>
